@@ -138,39 +138,106 @@ let barChartInstance = null;
 
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
+    renderHomePage();
     renderNav();
     initCharts();
-    loadModule(0);
 
     // Mobile menu toggle
     document.getElementById('mobile-menu-btn').addEventListener('click', () => {
         const menu = document.getElementById('mobile-menu');
         menu.classList.toggle('hidden');
     });
+    
+    // Show home page by default
+    showHomePage();
 });
 
+// --- Page Navigation Functions ---
+
+function showHomePage() {
+    document.getElementById('home-page').classList.remove('hidden');
+    document.getElementById('modules-page').classList.add('hidden');
+    updateNavActive('home');
+}
+
+function showModulesPage() {
+    document.getElementById('home-page').classList.add('hidden');
+    document.getElementById('modules-page').classList.remove('hidden');
+    updateNavActive('modules');
+}
+
+function updateNavActive(page) {
+    const homeBtn = document.getElementById('nav-home');
+    if (homeBtn) {
+        if (page === 'home') {
+            homeBtn.classList.add('active-nav');
+        } else {
+            homeBtn.classList.remove('active-nav');
+        }
+    }
+}
+
 // --- Render Functions ---
+
+function renderHomePage() {
+    const grid = document.getElementById('modules-grid');
+    grid.innerHTML = '';
+
+    courseData.modules.forEach(mod => {
+        const card = document.createElement('div');
+        card.className = 'module-card';
+        card.onclick = () => {
+            showModulesPage();
+            loadModule(mod.id);
+        };
+        
+        card.innerHTML = `
+            <div class="module-card-number">${mod.id + 1}</div>
+            <h3 class="module-card-title">${mod.title}</h3>
+            <div class="module-card-range">${mod.range}</div>
+            <p class="module-card-description">${mod.description}</p>
+        `;
+        
+        grid.appendChild(card);
+    });
+}
 
 function renderNav() {
     const container = document.getElementById('nav-container');
     const mobileContainer = document.getElementById('mobile-nav-container');
     
-    container.innerHTML = '';
+    // Clear only module buttons, keep home button
+    const existingHomeBtn = container.querySelector('#nav-home');
+    const moduleButtons = Array.from(container.children).filter(child => child.id !== 'nav-home');
+    moduleButtons.forEach(btn => btn.remove());
+    
     mobileContainer.innerHTML = '';
+    const mobileHomeBtn = document.createElement('button');
+    mobileHomeBtn.onclick = () => {
+        showHomePage();
+        document.getElementById('mobile-menu').classList.add('hidden');
+    };
+    mobileHomeBtn.className = "block px-3 py-2 rounded-md text-base font-medium cursor-pointer mobile-nav-link";
+    mobileHomeBtn.textContent = "Главная";
+    mobileContainer.appendChild(mobileHomeBtn);
 
     courseData.modules.forEach(mod => {
         // Desktop
         const btn = document.createElement('button');
-        btn.className = `px-3 py-2 rounded-md text-sm font-medium hover:bg-stone-300 transition-colors ${currentState.activeModuleId === mod.id ? 'active-nav' : 'text-stone-600'}`;
+        btn.className = `px-3 py-2 rounded-md text-sm font-medium transition-colors nav-link ${currentState.activeModuleId === mod.id ? 'active-nav' : ''}`;
         btn.textContent = mod.shortTitle;
-        btn.onclick = () => loadModule(mod.id);
+        btn.onclick = () => {
+            showModulesPage();
+            loadModule(mod.id);
+        };
         container.appendChild(btn);
 
         // Mobile
-        const mobBtn = document.createElement('a');
-        mobBtn.className = "block px-3 py-2 rounded-md text-base font-medium text-stone-700 hover:bg-stone-200 hover:text-stone-900 cursor-pointer";
+        const mobBtn = document.createElement('button');
+        mobBtn.className = "block px-3 py-2 rounded-md text-base font-medium cursor-pointer mobile-nav-link";
         mobBtn.textContent = mod.shortTitle;
         mobBtn.onclick = () => {
+            showModulesPage();
             loadModule(mod.id);
             document.getElementById('mobile-menu').classList.add('hidden');
         };
@@ -181,6 +248,11 @@ function renderNav() {
 function loadModule(id) {
     currentState.activeModuleId = id;
     const data = courseData.modules[id];
+
+    // Show modules page if not already shown
+    if (document.getElementById('modules-page').classList.contains('hidden')) {
+        showModulesPage();
+    }
 
     // Update UI Text
     document.getElementById('module-title').textContent = data.title;
