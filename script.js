@@ -152,10 +152,21 @@ function showModulesPage() {
 
 function updateNavActive(page) {
     // No home button in nav anymore, logo is the home button
-    // Just update module buttons active state
-    if (page === 'modules') {
+    // Clear all active states when on home page
+    if (page === 'home') {
+        clearNavActiveState();
+    } else if (page === 'modules') {
         updateNavActiveState();
     }
+}
+
+function clearNavActiveState() {
+    // Remove active state from all navigation buttons
+    const container = document.getElementById('nav-container');
+    const buttons = Array.from(container.querySelectorAll('button'));
+    buttons.forEach(btn => {
+        btn.classList.remove('active-nav');
+    });
 }
 
 function updateNavActiveState() {
@@ -210,6 +221,34 @@ function renderHomePage() {
             <h3 class="module-card-title">${mod.title}</h3>
             <div class="module-card-range">${mod.range}</div>
             <p class="module-card-description">${mod.description}</p>
+        `;
+        
+        grid.appendChild(card);
+    });
+
+    // Additional cards
+    const additionalCards = [
+        {
+            icon: '📖',
+            title: 'Дополнительный материал',
+            description: 'Дополнительные ресурсы, статьи и материалы для углубленного изучения'
+        },
+        {
+            icon: '🗺️',
+            title: 'Карты путешествий Павла',
+            description: 'Интерактивные карты миссионерских путешествий апостола Павла'
+        }
+    ];
+
+    additionalCards.forEach(cardData => {
+        const card = document.createElement('div');
+        card.className = 'module-card';
+        // No onclick handler - cards don't lead anywhere yet
+        
+        card.innerHTML = `
+            <div class="module-card-icon">${cardData.icon}</div>
+            <h3 class="module-card-title">${cardData.title}</h3>
+            <p class="module-card-description">${cardData.description}</p>
         `;
         
         grid.appendChild(card);

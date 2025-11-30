@@ -115,27 +115,13 @@ nav {
     border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-.banner-title {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: var(--accent-coral);
-    margin-bottom: 0.5rem;
-    font-family: 'Playfair Display', serif;
-}
-
 .banner-subtitle {
-    font-size: 3.2rem;
+    font-size: 3.5rem;
     font-weight: 700;
     color: var(--text-dark);
-    margin-bottom: 0.5rem;
+    margin: 0;
     font-family: 'Playfair Display', serif;
-}
-
-.banner-description {
-    font-size: 1.15rem;
-    color: var(--text-medium);
-    font-style: italic;
-    font-weight: 400;
+    letter-spacing: -0.02em;
 }
 
 /* Home Page Styles */
@@ -211,6 +197,13 @@ nav {
     right: 1.5rem;
     font-family: 'Playfair Display', serif;
     line-height: 1;
+}
+
+.module-card-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    display: block;
+    text-align: center;
 }
 
 .module-card-title {
@@ -404,6 +397,70 @@ footer {
 }
 
 /* Responsive Design */
+
+/* Large screens (1440px and up) */
+@media (min-width: 1440px) {
+    .banner-container {
+        height: 500px;
+    }
+    
+    .banner-subtitle {
+        font-size: 4rem;
+    }
+    
+    .modules-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
+    }
+    
+    .module-card {
+        padding: 3rem;
+    }
+    
+    .section-title {
+        font-size: 3rem;
+    }
+}
+
+/* Tablets (1024px and down) */
+@media (max-width: 1024px) {
+    .banner-container {
+        height: 400px;
+    }
+    
+    .banner-content {
+        padding: 2rem 2.5rem;
+        max-width: 550px;
+    }
+    
+    .banner-subtitle {
+        font-size: 3rem;
+    }
+    
+    .modules-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 2.2rem;
+    }
+    
+    .module-card {
+        padding: 2.25rem;
+    }
+    
+    .module-card-number {
+        font-size: 3.5rem;
+    }
+}
+
+/* Mobile devices (768px and down) */
 @media (max-width: 768px) {
     .banner-container {
         height: 350px;
@@ -412,22 +469,20 @@ footer {
     .banner-content {
         padding: 2rem;
         margin: 1rem;
-    }
-    
-    .banner-title {
-        font-size: 1.6rem;
+        max-width: calc(100% - 2rem);
     }
     
     .banner-subtitle {
         font-size: 2.4rem;
     }
     
-    .banner-description {
-        font-size: 1rem;
-    }
-    
     .section-title {
         font-size: 2rem;
+    }
+    
+    .section-description {
+        font-size: 1rem;
+        padding: 0 1rem;
     }
     
     .modules-grid {
@@ -442,5 +497,128 @@ footer {
     
     .module-card {
         padding: 2rem;
+    }
+    
+    .module-card-number {
+        font-size: 3rem;
+        top: 0.75rem;
+        right: 1rem;
+    }
+    
+    .module-card-icon {
+        font-size: 3rem;
+    }
+    
+    .features-section {
+        padding: 2.5rem 1.5rem;
+        margin-top: 3rem;
+    }
+    
+    .features-title {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+}
+
+/* Small mobile devices (640px and down) */
+@media (max-width: 640px) {
+    .banner-container {
+        height: 300px;
+    }
+    
+    .banner-content {
+        padding: 1.5rem;
+        margin: 0.75rem;
+        border-radius: 16px;
+    }
+    
+    .banner-subtitle {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.75rem;
+    }
+    
+    .section-description {
+        font-size: 0.95rem;
+    }
+    
+    .modules-grid {
+        gap: 1.25rem;
+    }
+    
+    .module-card {
+        padding: 1.75rem;
+        border-radius: 16px;
+    }
+    
+    .module-card-title {
+        font-size: 1.4rem;
+    }
+    
+    .module-card-number {
+        font-size: 2.5rem;
+    }
+    
+    .module-card-icon {
+        font-size: 2.5rem;
+    }
+    
+    .features-section {
+        padding: 2rem 1.25rem;
+        border-radius: 20px;
+    }
+    
+    .features-title {
+        font-size: 1.6rem;
+    }
+    
+    .feature-card {
+        padding: 1.75rem;
+    }
+    
+    .feature-icon {
+        font-size: 3rem;
+    }
+    
+    nav {
+        padding: 0.5rem 0;
+    }
+    
+    .logo-link {
+        font-size: 1.5rem;
+    }
+    
+    .nav-link {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+    }
+}
+
+/* Extra small devices (480px and down) */
+@media (max-width: 480px) {
+    .banner-container {
+        height: 250px;
+    }
+    
+    .banner-content {
+        padding: 1.25rem;
+    }
+    
+    .banner-subtitle {
+        font-size: 1.75rem;
+    }
+    
+    .module-card {
+        padding: 1.5rem;
+    }
+    
+    .module-card-title {
+        font-size: 1.25rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
     }
 }
