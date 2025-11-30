@@ -98,31 +98,25 @@ nav {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(15, 23, 42, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: linear-gradient(135deg, rgba(255, 214, 232, 0.2) 0%, rgba(214, 232, 255, 0.2) 100%);
 }
 
-.banner-content {
-    text-align: center;
-    padding: 2.5rem 3rem;
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(20px);
-    border-radius: 12px;
-    box-shadow: var(--shadow-lg);
-    max-width: 650px;
-    border: 1px solid var(--border-color);
+.banner-text {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 10;
 }
 
 .banner-subtitle {
-    font-size: 3.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    color: var(--text-dark);
+    color: rgba(255, 255, 255, 0.95);
     margin: 0;
     font-family: 'Playfair Display', serif;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     line-height: 1.2;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Home Page Styles */
@@ -201,10 +195,16 @@ nav {
 }
 
 .module-card-icon {
-    font-size: 3.5rem;
     margin-bottom: 1rem;
-    display: block;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--accent-primary);
+}
+
+.module-card-icon svg {
+    width: 3rem;
+    height: 3rem;
 }
 
 .module-card-title {
@@ -275,9 +275,16 @@ nav {
 }
 
 .feature-icon {
-    font-size: 2.5rem;
     margin-bottom: 0.75rem;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--accent-primary);
+}
+
+.feature-icon svg {
+    width: 3rem;
+    height: 3rem;
 }
 
 .feature-card-title {
@@ -391,90 +398,31 @@ nav {
 }
 
 /* Registration Section */
-.registration-card {
-    background: var(--primary-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: var(--shadow-sm);
-}
-
-.registration-title {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 0.5rem;
-    font-family: 'Playfair Display', serif;
+.registration-card-simple {
     text-align: center;
 }
 
-.registration-description {
-    font-size: 0.95rem;
-    color: var(--text-medium);
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.registration-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.form-label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-dark);
-}
-
-.form-input {
-    width: 100%;
-    padding: 0.625rem 0.875rem;
-    font-size: 0.95rem;
-    color: var(--text-dark);
-    background: var(--primary-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    transition: all 0.2s ease;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-.form-input::placeholder {
-    color: var(--text-light);
-}
-
-.registration-button {
-    width: 100%;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
+.registration-button-simple {
+    padding: 1rem 2.5rem;
+    font-size: 1.125rem;
     font-weight: 600;
     color: white;
     background: var(--accent-primary);
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-    margin-top: 0.5rem;
+    box-shadow: var(--shadow-sm);
 }
 
-.registration-button:hover {
+.registration-button-simple:hover {
     background: var(--accent-primary-hover);
     box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
 }
 
-.registration-button:active {
-    transform: scale(0.98);
+.registration-button-simple:active {
+    transform: translateY(0);
 }
 
 /* Footer */
@@ -561,7 +509,12 @@ footer {
     }
     
     .banner-subtitle {
-        font-size: 2.4rem;
+        font-size: 1.75rem;
+    }
+    
+    .banner-text {
+        bottom: 1.5rem;
+        left: 1.5rem;
     }
     
     .section-title {
@@ -593,8 +546,14 @@ footer {
         right: 1rem;
     }
     
-    .module-card-icon {
-        font-size: 3rem;
+    .module-card-icon svg {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    
+    .feature-icon svg {
+        width: 2.5rem;
+        height: 2.5rem;
     }
     
     .features-section {
@@ -657,8 +616,14 @@ footer {
         font-size: 2.5rem;
     }
     
-    .module-card-icon {
-        font-size: 2.5rem;
+    .module-card-icon svg {
+        width: 2rem;
+        height: 2rem;
+    }
+    
+    .feature-icon svg {
+        width: 2rem;
+        height: 2rem;
     }
     
     .features-section {
@@ -674,8 +639,9 @@ footer {
         padding: 1.75rem;
     }
     
-    .feature-icon {
-        font-size: 3rem;
+    .feature-icon svg {
+        width: 2.5rem;
+        height: 2.5rem;
     }
     
     nav {
@@ -715,7 +681,12 @@ footer {
     }
     
     .banner-subtitle {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
+    }
+    
+    .banner-text {
+        bottom: 1rem;
+        left: 1rem;
     }
     
     .module-card {

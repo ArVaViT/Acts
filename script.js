@@ -229,12 +229,16 @@ function renderHomePage() {
     // Additional cards
     const additionalCards = [
         {
-            icon: '📖',
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+            </svg>`,
             title: 'Дополнительный материал',
             description: 'Дополнительные ресурсы, статьи и материалы для углубленного изучения'
         },
         {
-            icon: '🗺️',
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.5 0H8.25m4.5 0a2.25 2.25 0 004.5 0V9a2.25 2.25 0 00-4.5 0v3.75M3.75 21h13.5A2.25 2.25 0 0021 18.75V5.25A2.25 2.25 0 0017.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+            </svg>`,
             title: 'Карты путешествий Павла',
             description: 'Интерактивные карты миссионерских путешествий апостола Павла'
         }
