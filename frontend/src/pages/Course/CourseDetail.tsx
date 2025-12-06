@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { coursesService } from '@/services/courses'
 import { authService } from '@/services/auth'
-import type { Course, Module } from '@/types'
+import type { Course } from '@/types'
 import { BookOpen, Play } from 'lucide-react'
 
 export default function CourseDetail() {

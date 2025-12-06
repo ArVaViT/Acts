@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { coursesService } from '@/services/courses'
-import type { Module, Chapter } from '@/types'
+import type { Module } from '@/types'
 import { ArrowLeft, Book } from 'lucide-react'
 
 export default function ModuleView() {

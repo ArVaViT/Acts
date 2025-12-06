@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { coursesService } from '@/services/courses'
 import type { Course } from '@/types'
 import CourseCard from '@/components/course/CourseCard'
