@@ -17,6 +17,13 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+function PublicRoute({ children }: { children: React.ReactNode }) {
+  if (authService.isAuthenticated()) {
+    return <Navigate to="/" replace />
+  }
+  return <>{children}</>
+}
+
 function App() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
@@ -29,6 +36,7 @@ function App() {
           setUser(currentUser)
         } catch (error) {
           authService.logout()
+          setUser(null)
         }
       }
       setLoading(false)
@@ -50,9 +58,32 @@ function App() {
         <Header user={user} setUser={setUser} />
         <main className="flex-grow">
           <Routes>
-            <Route path="/login" element={<Login setUser={setUser} />} />
-            <Route path="/register" element={<Register setUser={setUser} />} />
-            <Route path="/" element={<HomePage />} />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Login setUser={setUser} />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <PublicRoute>
+                  <Register setUser={setUser} />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/"
+              element={
+                authService.isAuthenticated() ? (
+                  <HomePage />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
+            />
             <Route
               path="/dashboard"
               element={
