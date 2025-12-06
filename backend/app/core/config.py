@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     
     @property
     def cors_origins_list(self) -> list[str]:
+        if not self.CORS_ORIGINS:
+            return ["*"]
         origins = [origin.strip() for origin in self.CORS_ORIGINS.split(",")]
         # Если CORS_ORIGINS содержит "*", возвращаем ["*"] для разрешения всех origins
         if "*" in origins:
