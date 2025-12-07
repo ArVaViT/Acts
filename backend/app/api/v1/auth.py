@@ -10,7 +10,7 @@ from app.services.auth_service import register_user, authenticate_user
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.options("/register")
+@router.options("/register", include_in_schema=False)
 async def options_register(request: Request):
     """Handle OPTIONS preflight requests for register endpoint"""
     origin = request.headers.get("origin", "*")
@@ -25,7 +25,7 @@ async def options_register(request: Request):
     )
 
 
-@router.options("/login")
+@router.options("/login", include_in_schema=False)
 async def options_login(request: Request):
     """Handle OPTIONS preflight requests for login endpoint"""
     origin = request.headers.get("origin", "*")

@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware.base import BaseHTTPMiddleware
 from app.core.config import settings
 from app.api.v1 import api_router
 
@@ -19,81 +18,41 @@ except Exception:
 # Нельзя использовать credentials с "*"
 allow_credentials = "*" not in cors_origins
 
-# Middleware для обработки OPTIONS запросов ДО всего остального
-class OptionsMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        if request.method == "OPTIONS":
-            try:
-                # Получаем origin из запроса
-                origin = request.headers.get("origin")
-                
-                # Определяем allowed_origin
-                allowed_origin = "*"
-                credentials_header = ""
-                
-                try:
-                    if allow_credentials and origin:
-                        # Если credentials разрешены, используем конкретный origin
-                        if cors_origins and "*" not in cors_origins:
-                            if origin in cors_origins:
-                                allowed_origin = origin
-                                credentials_header = "true"
-                            else:
-                                # Origin не в списке, но для preflight все равно отвечаем
-                                allowed_origin = origin
-                                credentials_header = "true"
-                        else:
-                            # Если "*" в cors_origins, credentials не могут быть true
-                            allowed_origin = "*"
-                            credentials_header = "false"
-                    else:
-                        # Credentials не разрешены, можно использовать "*"
-                        allowed_origin = "*"
-                        credentials_header = "false"
-                except Exception:
-                    # В случае ошибки используем безопасные значения
-                    allowed_origin = "*"
-                    credentials_header = "false"
-                
-                # Строим заголовки
-                headers = {
-                    "Access-Control-Allow-Origin": allowed_origin,
-                    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
-                    "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept, Origin, X-Requested-With",
-                    "Access-Control-Max-Age": "3600",
-                }
-                
-                # Добавляем credentials только если они разрешены
-                if credentials_header == "true":
-                    headers["Access-Control-Allow-Credentials"] = "true"
-                
-                return Response(status_code=200, headers=headers)
-            except Exception as e:
-                # В случае любой ошибки возвращаем базовый ответ без credentials
-                return Response(
-                    status_code=200,
-                    headers={
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
-                        "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept, Origin, X-Requested-With",
-                        "Access-Control-Max-Age": "3600",
-                    }
-                )
-        return await call_next(request)
-
-# Добавляем OPTIONS middleware ПЕРВЫМ
-app.add_middleware(OptionsMiddleware)
-
-# CORS middleware
+# CORS middleware - handles OPTIONS automatically
+# Note: allow_origins=["*"] with allow_credentials=True is not allowed by browsers
+# So we use explicit origins or "*" without credentials
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins,
+    allow_origins=cors_origins if cors_origins != ["*"] else ["*"],
     allow_credentials=allow_credentials,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"],
+    allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With", "Access-Control-Request-Method", "Access-Control-Request-Headers"],
     expose_headers=["*"],
     max_age=3600,
 )
+
+# Catch-all OPTIONS handler at app level (before router) as fallback
+@app.options("/{full_path:path}", include_in_schema=False)
+async def options_handler(request: Request):
+    """Catch-all OPTIONS handler for all paths - fallback if CORSMiddleware doesn't catch it"""
+    origin = request.headers.get("origin", "*")
+    # Use the origin from request if it's in allowed origins, otherwise use "*"
+    allowed_origin = "*"
+    if origin and origin != "*":
+        if cors_origins == ["*"] or origin in cors_origins:
+            allowed_origin = origin
+    
+    headers = {
+        "Access-Control-Allow-Origin": allowed_origin,
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept, Origin, X-Requested-With",
+        "Access-Control-Max-Age": "3600",
+    }
+    
+    if allow_credentials and allowed_origin != "*":
+        headers["Access-Control-Allow-Credentials"] = "true"
+    
+    return Response(status_code=200, headers=headers)
 
 # Include API router
 app.include_router(api_router, prefix="/api/v1")
@@ -107,4 +66,20 @@ async def root():
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+# Обработчики для статических файлов, которые браузер запрашивает автоматически
+# Эти запросы не должны ломать логи, просто возвращаем пустой ответ
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    """Обработчик для favicon - браузер запрашивает его автоматически"""
+    return Response(status_code=204)  # No Content
+
+
+@app.get("/vite.svg", include_in_schema=False)
+@app.get("/favicon.png", include_in_schema=False)
+@app.get("/favicon.svg", include_in_schema=False)
+async def static_icons():
+    """Обработчики для иконок - браузер может запрашивать их автоматически"""
+    return Response(status_code=204)  # No Content
 
