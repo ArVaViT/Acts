@@ -46,6 +46,7 @@ class OptionsMiddleware(BaseHTTPMiddleware):
         
         return await call_next(request)
 
+
 # Добавляем OPTIONS middleware ПЕРВЫМ (он будет последним в цепочке, но первым выполнится)
 app.add_middleware(OptionsMiddleware)
 
